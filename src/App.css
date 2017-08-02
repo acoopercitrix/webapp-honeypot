@@ -1,0 +1,74 @@
+.App {
+  text-align: center;
+}
+
+.App-sidebar {
+	float: left;
+	max-width: 250px;
+	background: blue;
+	margin: 0;
+	padding: 1em;
+	
+}
+
+.App-sidebar.ul {
+	list-style-type: none;
+	padding: 0;
+}
+
+.App-logo {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 210px;
+  	height: 180px;
+}
+
+.App-header {
+  background-color: #222;
+  top: 0px;
+  height: 180px;
+  color: white;
+}
+
+.App-intro {
+  font-size: large;
+}
+
+.App-main {
+	position: absolute;
+	top: 180px;
+	bottom: 100px;
+	width: 100%;
+	overflow: hidden;
+	background: #1b90a1;
+}
+
+.App-footer {
+	position: absolute;
+	bottom: 0;
+	height: 100px;
+	width: 100%;
+}
+
+.redbutton {
+	float: left;
+	left-margin: 400px;
+}
+
+.App-footer-content {
+	text-align: center;
+}
+@keyframes App-logo-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.slide-appear {
+  opacity: 0.01;
+}
+
+.slide-appear.slide-appear-active {
+  opacity: 1;
+  transition: opacity .5s ease-in;
+}

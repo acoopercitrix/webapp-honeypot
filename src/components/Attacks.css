@@ -1,0 +1,35 @@
+.card {
+  background: white;
+  border-radius: 3px;
+  box-shadow: 1px 1px 1px rgba(0,0,0,0.2);
+}
+
+ul {
+  padding: 0;
+}
+
+.list-item {
+  position: relative;
+  margin: 0 6px 12px 6px;
+  padding: 16px;
+  list-style-type: none;
+
+}
+
+.list {
+  display: block;
+}
+
+.grid {
+	display: inline-block;
+}
+
+img {
+	float: left;
+}
+
+.attackSummary {
+	height: 30px;
+	background: grey;
+	
+}
