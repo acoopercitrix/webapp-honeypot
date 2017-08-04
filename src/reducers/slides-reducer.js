@@ -8,18 +8,17 @@ export default (state = slide_state, action) => {
   let newState = {...state};
   switch (action.type) {
     case 'NEXT_SLIDE':
-        // Start showing first slide now if we aren't already
+        // Each time mouse is clicked, we stop/start slideshow
+        newState.showingSlides = !state.showingSlides;
+        // Start showing slides now if we aren't already
         if (!state.showingSlides) {
-            newState.showingSlides = true;
             return newState;
         }
-        // We were already showing slides, so advance to the next one
+        // We were already showing slides, so advance to the slideshow
         newState.slideIndex = state.slideIndex+1;
-        // Stop showing slides when we reach the end, and loop back
+        // Loop back to the first slideshow once we reach the end
         if (newState.slideIndex >= action.numSlides) {
-            // We have reached the last slide, go back to the attack screen
             newState.slideIndex = 0;
-            newState.showingSlides = false;
         }
         return newState;
     case 'STOP_SLIDES':

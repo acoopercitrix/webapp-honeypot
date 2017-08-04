@@ -6,13 +6,16 @@ import * as slideActions from './actions/slides-actions';
 import * as attacksActions from './actions/attack-actions';
 import logo from './centre-computing-history.gif';
 import redbutton from './bigredbutton.jpg'
+import radar from './radar.gif'
 import './App.css';
+import './slick.css';
 import AttacksContainer from './components/AttacksContainer';
 import * as slides from './components/Slides';
 
 // revert to attack view if the slides are left showing for this long
 const SLIDE_TIMEOUT = 60000
-
+// can't repeatedly press the button any faster than this
+const BUTTON_ANTI_MASH_TIMEOUT = 1500
 class App extends Component {	
 	constructor(props) {
 		super(props);
@@ -25,10 +28,11 @@ class App extends Component {
 	componentDidMount() {
 		console.log('I was triggered during componentDidMount')
 		// Listen to the attacks Server Side Event Source
-		this.eventSource = new EventSource("http://10.80.5.41:3001/attacks");
-		//this.eventSource = new EventSource("http://localhost:3000/attacks");
+		//this.eventSource = new EventSource("http://10.80.5.41:3001/attacks");
+		this.eventSource = new EventSource("http://localhost:3000/attacks");
 		this.eventSource.addEventListener('attack', this.handleEvent);
 		window.addEventListener('mousedown', this.pageClick.bind(this), false);
+		this.lastMouseClick = Date.now();
 	}
 	handleEvent(event) {
 		const attack = JSON.parse(event.data);
@@ -40,8 +44,13 @@ class App extends Component {
 		this.eventSource.close();
 	}
 	pageClick(e) {
-		// move onto next slide, or start/stop showing slides, as required
-		this.props.actions.nextSlide(this.numSlides);
+		// as long as the button isn't being mashed, we will act
+		const timeNow = Date.now();
+		if (timeNow - this.lastMouseClick >= BUTTON_ANTI_MASH_TIMEOUT) {
+			// move onto next slide, or start/stop showing slides, as required
+			this.props.actions.nextSlide(this.numSlides);
+			this.lastMouseClick = timeNow;
+		}
 	}
   render() {
 		// make sure the timeout is always either refreshed or cancelled
@@ -49,13 +58,28 @@ class App extends Component {
 				clearTimeout(this.timeout);
 				this.timeout = null;
 		}
+		// begin the timeout to restart the slideshow presentation
+		this.timeout = setTimeout(function() {
+				this.props.actions.stopSlides()
+		}.bind(this), SLIDE_TIMEOUT);
 		if (this.props.showingSlides) {
+			  const settings = {
+					dots: false,
+					fade: true,
+					infinite: false,
+					autoplay: true,
+					autoplaySpeed: 5000,
+					arrows: false,
+					pauseOnHover: false,
+					accessibility: false,
+					focusOnSelect: false,
+					lazyLoad: false,
+					speed: 1500,
+					slidesToShow: 1,
+					slidesToScroll: 1
+				};
 				const slideName = Object.keys(slides)[this.props.slideIndex];
-				const thisSlide = slides[slideName]();
-				// restart the timeout for the new slide
-				this.timeout = setTimeout(function() {
-						this.props.actions.stopSlides()
-				}.bind(this), SLIDE_TIMEOUT);
+				const thisSlide = slides[slideName](settings);
 				return (thisSlide);
 		} else {
 			return (
@@ -63,7 +87,8 @@ class App extends Component {
 				<div className="App">
 					<div className="App-header">
 						<img src={logo} className="App-logo" alt="logo" />
-							<h2>Monitoring for hacking attacks against the museum</h2>
+						<h1>Monitoring for cyberattacks against the museum</h1>
+						<img src={radar} className="App-radar-image" alt="radar" />
 					</div>
 					<div className="App-main">
 							<AttacksContainer/>

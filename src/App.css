@@ -24,6 +24,14 @@
   	height: 180px;
 }
 
+.App-radar-image {
+	position: absolute;
+	top: 0;
+	right: 0;
+	width: 210px;
+  height: 180px;
+}
+
 .App-header {
   background-color: #222;
   top: 0px;
@@ -53,12 +61,14 @@
 
 .redbutton {
 	float: left;
-	left-margin: 400px;
 }
 
 .App-footer-content {
 	text-align: center;
+	width: 40%;
+	margin: 0 auto;
 }
+
 @keyframes App-logo-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
@@ -71,4 +81,9 @@
 .slide-appear.slide-appear-active {
   opacity: 1;
   transition: opacity .5s ease-in;
+}
+
+.fullscreen-slide  {
+	margin: 0 auto;
+	width: 50%;
 }

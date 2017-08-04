@@ -24,6 +24,8 @@ ul {
 	display: inline-block;
 }
 
+/* This is a hack - only want it to apply to the list-item img
+   but applied it globally because I couldn't work out how */
 img {
 	float: left;
 }

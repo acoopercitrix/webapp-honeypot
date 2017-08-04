@@ -7,7 +7,6 @@ import './Attacks.css';
 class AttacksList extends Component {
 	render() {
 		return (
-		  <div>
 			<div className="grid">
 				<FlipMove typeName="ul" staggerDurationBy="30" enterAnimation="accordianVertical" duration={500} easing="ease-out">
 					{this.props.attacks.slice(-20).map(attack => (
@@ -15,7 +14,6 @@ class AttacksList extends Component {
 					))}
 				</FlipMove>
 			</div>
-		  </div>
 		);
 	}
 };
