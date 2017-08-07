@@ -13,7 +13,7 @@ import AttacksContainer from './components/AttacksContainer';
 import * as slides from './components/Slides';
 
 // revert to attack view if the slides are left showing for this long
-const SLIDE_TIMEOUT = 60000
+const SLIDE_TIMEOUT = 120000
 // can't repeatedly press the button any faster than this
 const BUTTON_ANTI_MASH_TIMEOUT = 1500
 class App extends Component {	
@@ -29,7 +29,7 @@ class App extends Component {
 		console.log('I was triggered during componentDidMount')
 		// Listen to the attacks Server Side Event Source
 		//this.eventSource = new EventSource("http://10.80.5.41:3001/attacks");
-		this.eventSource = new EventSource("http://localhost:3000/attacks");
+		this.eventSource = new EventSource("/attacks");
 		this.eventSource.addEventListener('attack', this.handleEvent);
 		window.addEventListener('mousedown', this.pageClick.bind(this), false);
 		this.lastMouseClick = Date.now();
@@ -63,12 +63,17 @@ class App extends Component {
 				this.props.actions.stopSlides()
 		}.bind(this), SLIDE_TIMEOUT);
 		if (this.props.showingSlides) {
+				var autoplaySpeed = 10000;
+				if (this.props.slideIndex == 0) {
+					// first set of slides is a bit easier, reduce timeout
+					autoplaySpeed = 5000;
+				}
 			  const settings = {
 					dots: false,
 					fade: true,
 					infinite: false,
 					autoplay: true,
-					autoplaySpeed: 5000,
+					autoplaySpeed: autoplaySpeed,
 					arrows: false,
 					pauseOnHover: false,
 					accessibility: false,
