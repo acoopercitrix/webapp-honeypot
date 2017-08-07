@@ -24,6 +24,8 @@ class App extends Component {
 		this.handleEvent = this.handleEvent.bind(this);
 		// timeout to revert to attack view if the slides are left showing
 		this.timeout = null;
+		// cache new attack events while slides are showing
+		this.attackCache = [];
 	}
 	componentDidMount() {
 		console.log('I was triggered during componentDidMount')
@@ -36,7 +38,12 @@ class App extends Component {
 	}
 	handleEvent(event) {
 		const attack = JSON.parse(event.data);
-		this.props.attack_actions.addAttack(attack);	
+		if (this.props.showingSlides) {
+				// cache incoming attacks to avoid re-render which breaks slideshow
+				this.attackCache.push(attack);
+		} else {
+			this.props.attack_actions.addAttack(attack);	
+		}
 	}
 	componentWillUnmount() {
 		console.log('I was triggered during componentWillUnmount')
@@ -50,7 +57,20 @@ class App extends Component {
 			// move onto next slide, or start/stop showing slides, as required
 			this.props.actions.nextSlide(this.numSlides);
 			this.lastMouseClick = timeNow;
+			if (!this.props.showingSlides) {
+					this.renderCachedAttacks();
+			}
 		}
+	}
+	// Restart the demo, occurs after SLIDE_TIMEOUT
+	restart() {
+		this.props.actions.stopSlides();
+		this.renderCachedAttacks();
+	}
+	renderCachedAttacks() {
+			// render cached attacks
+			this.attackCache.map(this.props.attack_actions.addAttack);
+			this.attackCache = [];
 	}
   render() {
 		// make sure the timeout is always either refreshed or cancelled
@@ -60,7 +80,7 @@ class App extends Component {
 		}
 		// begin the timeout to restart the slideshow presentation
 		this.timeout = setTimeout(function() {
-				this.props.actions.stopSlides()
+				this.restart()
 		}.bind(this), SLIDE_TIMEOUT);
 		if (this.props.showingSlides) {
 				var autoplaySpeed = 10000;
