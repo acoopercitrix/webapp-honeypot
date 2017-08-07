@@ -13,7 +13,7 @@ import AttacksContainer from './components/AttacksContainer';
 import * as slides from './components/Slides';
 
 // revert to attack view if the slides are left showing for this long
-const SLIDE_TIMEOUT = 120000
+const SLIDE_TIMEOUT = 160000
 // can't repeatedly press the button any faster than this
 const BUTTON_ANTI_MASH_TIMEOUT = 1500
 class App extends Component {	
@@ -83,17 +83,12 @@ class App extends Component {
 				this.restart()
 		}.bind(this), SLIDE_TIMEOUT);
 		if (this.props.showingSlides) {
-				var autoplaySpeed = 10000;
-				if (this.props.slideIndex == 0) {
-					// first set of slides is a bit easier, reduce timeout
-					autoplaySpeed = 5000;
-				}
 			  const settings = {
 					dots: false,
-					fade: true,
+					fade: false,
 					infinite: false,
 					autoplay: true,
-					autoplaySpeed: autoplaySpeed,
+					autoplaySpeed: 15000,
 					arrows: false,
 					pauseOnHover: false,
 					accessibility: false,
